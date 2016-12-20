@@ -1,0 +1,145 @@
+REST PUT
+www.asecurecart.net
+/aimservice/customer
+
+409 Conflict
+{
+ "status" : 409,
+ "code" : 49001,
+ "property" : "username",
+ "message" : "Please select a different username.",
+ "developerMessage" : "A username of 'foo' already exists. Username values must be unique.",
+ "moreInfo" : ""
+}
+
+
+call this UsernameExists first
+
+BO set:
+=======
+@TypeCode varchar(20), -- CUSTOMER
+@AccountStatusID int, -- customer status (should be 1)
+@InActiveDate smalldatetime = null, -- null
+@CustomTypeCode varchar(20),  -- '' or maybe ASICART (i.e. - SRC)
+@BillingAddressTypeCode as varchar(20) = '', -- 'BILLING'
+
+required:
+=========
+merchantid - encoded?
+username
+password
+first name
+last name
+email
+
+optional:
+=========
+address1
+address2
+city
+state
+zip
+countrycode
+phone number
+
+
+IntegrationAddOrderAccount
+
+-- account info
+	@ParentID int, -- merchant id
+	@TypeCode varchar(20), -- CUSTOMER
+	@AccountStatusID int, -- customer status (should be 1)
+	@AccountName varchar(50), -- customer company name or first+last
+	@URL varchar(200), -- ''
+	@InActiveDate smalldatetime = null, -- null
+	@CustomTypeCode varchar(20),  -- '' or maybe ASICART (i.e. - SRC)
+
+	-- billing address fields
+	@BillingAddressTypeCode as varchar(20) = '', -- 'BILLING'
+	@BillingAddress1 as varchar(100) = '',
+	@BillingAddress2 as varchar(100) = '',
+	@BillingCity as varchar(50) = '',
+	@BillingStateCode varchar(50) = '',
+	@BillingPostalCode varchar(20) = '',
+	@BillingCountryCode varchar(50) = '',
+
+	-- optional phone fields
+	@PhoneTypeCode varchar(10) = '', --'_BLANK'
+	@PhoneNumber varchar(20) = '',
+	@Ext varchar(8) = '',
+
+	-- optional email fields
+	@EmailTypeCode varchar(20) = '', --'_BLANK'
+	@EmailName varchar(50) = '', -- first+last
+	@EmailAddress varchar(200) = '',
+
+	-- person fields
+	@PersonTypeCode varchar(20) = '',
+	@PersonPrefix varchar(10) = '',
+	@PersonFirstName varchar(50) = '',
+	@PersonMI varchar(10) = '',
+	@PersonLastName varchar(50) = '',
+	@PersonSuffix varchar(10) = '',
+
+	-- shipping address fields
+	@ShippingAddressTypeCode as varchar(20) = '', -- 'SHIPPING' or '' (i.e.- not _BLANK but actual '') means skip shipping address
+	@ShippingAddress1 as varchar(100) = '',
+	@ShippingAddress2 as varchar(100) = '',
+	@ShippingCity as varchar(50) = '',
+	@ShippingStateCode varchar(50) = '',
+	@ShippingPostalCode varchar(20) = '',
+	@ShippingCountryCode varchar(50) = '',
+
+	@Username varchar(50) = '',
+	@EncryptedPassword varchar(255) = '',
+	@HashedPassword varchar(255) = ''
+
+pass in
+
+ParentID - Merchant Account ID
+TypeCode = CUSTOMER
+AccountStatusID = 1
+AccountName - {Company Name} or {Person First and Last}
+URL = ""
+InActiveDate = NULL
+CustomType = '' (ASICART FOR ASI, maybe NEWUSER or ???)
+
+BillingAddressTypeCode = BILLING
+BillingAddress1
+BillingAddress2
+BillingCity
+BillingStateCode
+BillingPostalCode
+BillingCountyCode - US
+
+PhoneTypeCode = _BLANK
+PhoneNumber
+Ext = ""
+
+EmailTypeCode = _BLANK
+EmailName = {Person First and Last}
+EmailAddress = email
+
+PersonTypeCode = ""
+PersonPrefix = ""
+PersonFirstName = first
+PersonMI = ""
+PersonLastName = last
+PersonSuffix = ""
+
+ShippingAddressTypeCode = BILLING
+ShippingAddress1
+ShippingAddress2
+ShippingCity
+ShippingStateCode
+ShippingPostalCode
+ShippingCountyCode - US
+
+Username - check
+EncryptedPassword
+HashedPassword
+
+NotificationEmail (merchant email)
+
+
+
